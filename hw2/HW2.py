@@ -26,7 +26,7 @@ class Kmer_info:
 def find_kmers(file, kmer_size):
     
     sequence = SeqIO.read(file, 'fasta')
-    sequence = sequence.seq[0:100]
+    sequence = sequence.seq
 
 
     kmer_dict = {}
