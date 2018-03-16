@@ -7,30 +7,23 @@ class Kmer_info:
 
     count = 0
     sequence = ''
-    pos = ''
 
     def __init__(self, kmer_name):
         self.sequence = kmer_name
+        self.pos = []
 
     def counter(self):
         self.count += 1
 
     def position(self, index):
-        if self.pos != '':
-            self.pos += ', '
-            self.pos += str(index+1)
-        else:
-            self.pos += str(index+1)
+        self.pos.append(index)
 
 
 def find_kmers(file, kmer_size):
     
     sequence = SeqIO.read(file, 'fasta')
     sequence = sequence.seq
-
-
     kmer_dict = {}
-
     seq_lng = len(sequence)
     
     for index in range(seq_lng-kmer_size+1):
@@ -49,7 +42,7 @@ def find_kmers(file, kmer_size):
     for current_kmer in kmer_dict.keys():
         kmer_df = kmer_df.append(pd.DataFrame({'kmer': str(kmer_dict[current_kmer].sequence),
                                                'number': kmer_dict[current_kmer].count,
-                                               'positions': str(kmer_dict[current_kmer].pos)}, index=[0]), ignore_index=True)
+                                               'positions': str(kmer_dict[current_kmer].pos)}, index=[1]), ignore_index=True)
 
 
     sorted_kmer_df = kmer_df.sort_values(['number'], ascending=False)
@@ -67,5 +60,3 @@ if __name__ == "__main__":
     kmer_size = args.kmer_size
     
     find_kmers(file, kmer_size)
-
-
